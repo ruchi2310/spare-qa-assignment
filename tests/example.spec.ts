@@ -10,11 +10,13 @@ test.describe('Product Hunt Homepage', () => {
     await expect(page).toHaveTitle(/Product Hunt/i);
   });
 
-  test('HP-02: Search control is visible', async ({ page }) => {
-    await expect(
-      page.getByText(/Search/i).first()
-    ).toBeVisible();
+ test('HP-02: Search control is visible', async ({ page }) => {
+  const searchControl = page.getByRole('button', {
+    name: /search/i,
   });
+
+  await expect(searchControl.first()).toBeVisible();
+});
 
   test('HP-03: Product listings are displayed', async ({ page }) => {
     await expect(
