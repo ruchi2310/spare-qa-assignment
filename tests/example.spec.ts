@@ -10,27 +10,24 @@ test.describe('Product Hunt Homepage', () => {
     await expect(page).toHaveTitle(/Product Hunt/i);
   });
 
-test('HP-02: Search control is visible', async ({ page }) => {
-  const searchControl = page.locator(
-    '[data-test*="search" i], input[placeholder*="search" i], button[aria-label*="search" i]'
-  ).first();
+  test('HP-02: Search control is present', async ({ page }) => {
+    const searchControl = page.getByRole('button', {
+      name: /search/i,
+    }).or(
+      page.locator('input[placeholder*="search" i]')
+    ).first();
 
-  await expect(searchControl).toBeVisible();
-});
+    await expect(searchControl).toBeVisible();
+  });
 
-test('HP-03: Product listings are displayed', async ({ page }) => {
-  const todaySection = page.locator(
-    '[data-test="homepage-section-today"]'
-  );
+  test('HP-03: Product listings are displayed', async ({ page }) => {
+  const heading = page.locator('#top-products-launching-today');
 
-  await expect(
-    todaySection.locator('[data-test="homepage-tagline"]')
-  ).toHaveText('Top Products Launching Today');
+  await expect(heading).toHaveText('Top Products Launching Today');
 
-  const productLinks = todaySection.locator(
-    'a[href^="/products/"]'
-  );
+  const productLink = page.locator('a[href="/products/voxel51"]');
 
-  await expect(productLinks.first()).toBeVisible();
+  await expect(productLink).toBeVisible();
+  await expect(productLink).toContainText('Voxel51 Multimodal');
 });
 });
