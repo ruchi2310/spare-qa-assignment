@@ -6,9 +6,16 @@ test.describe('Product Hunt Homepage', () => {
     await page.goto('https://www.producthunt.com/');
   });
 
-  test('HP-01: Homepage loads successfully', async ({ page }) => {
-    await expect(page).toHaveTitle(/Product Hunt/i);
-  });
+ test('HP-01: Homepage loads successfully', async ({ page }) => {
+  await page.goto('https://www.producthunt.com/');
+
+  const title = await page.title();
+
+  expect(
+    title,
+    `Expected Product Hunt homepage, but received title: "${title}". CI may be blocked by a browser challenge.`
+  ).toMatch(/Product Hunt/i);
+});
 
   test('HP-02: Search control is present', async ({ page }) => {
     const searchControl = page.getByRole('button', {
