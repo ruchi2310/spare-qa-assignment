@@ -10,21 +10,27 @@ test.describe('Product Hunt Homepage', () => {
     await expect(page).toHaveTitle(/Product Hunt/i);
   });
 
- test('HP-02: Search control is visible', async ({ page }) => {
-  const searchControl = page.getByRole('button', {
-    name: /search/i,
-  });
+test('HP-02: Search control is visible', async ({ page }) => {
+  const searchControl = page.locator(
+    '[data-test*="search" i], input[placeholder*="search" i], button[aria-label*="search" i]'
+  ).first();
 
-  await expect(searchControl.first()).toBeVisible();
+  await expect(searchControl).toBeVisible();
 });
 
-  test('HP-03: Product listings are displayed', async ({ page }) => {
-    await expect(
-      page.getByText('Top Products Launching Today')
-    ).toBeVisible();
+test('HP-03: Product listings are displayed', async ({ page }) => {
+  const todaySection = page.locator(
+    '[data-test="homepage-section-today"]'
+  );
 
-    await expect(
-      page.getByText('Recall for Mac')
-    ).toBeVisible();
-  });
+  await expect(
+    todaySection.locator('[data-test="homepage-tagline"]')
+  ).toHaveText('Top Products Launching Today');
+
+  const productLinks = todaySection.locator(
+    'a[href^="/products/"]'
+  );
+
+  await expect(productLinks.first()).toBeVisible();
+});
 });
